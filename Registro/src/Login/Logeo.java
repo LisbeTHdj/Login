@@ -6,13 +6,20 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import java.awt.Color;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import java.awt.event.ActionListener;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.awt.event.ActionEvent;
+import java.sql.Connection;
 
 public class Logeo extends JFrame {
 
@@ -77,7 +84,40 @@ public class Logeo extends JFrame {
 		btnIngresar.setBackground(new Color(255, 215, 0));
 		btnIngresar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			}
+				 String usuario = txtUsuario.getText();
+			        String contraseña = new String(jpassClave.getPassword());
+
+			        // Validar campos vacíos
+			        if (usuario.isEmpty() || contraseña.isEmpty()) {
+			            JOptionPane.showMessageDialog(null, "Error: Todos los campos son obligatorios.", "Incompleto", JOptionPane.ERROR_MESSAGE);
+			            return;
+			        }
+
+			        try {
+			            String JDBC_URL = "jdbc:mysql://localhost:3306/Registro";
+			            String JDBC_USER = "root";
+			            String JDBC_PASSWORD = "12345@Abc";
+			            Connection connection = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+
+			            String sql = "SELECT * FROM Usuarios WHERE Usuario = ? AND Contraseña = ?";
+			            PreparedStatement statement = connection.prepareStatement(sql);
+			            statement.setString(1, usuario);
+			            statement.setString(2, contraseña);
+			            ResultSet result = statement.executeQuery();
+
+			            if (result.next()) {
+			                JOptionPane.showMessageDialog(null, "Bienvenido, " + usuario + "!", "Acceso permitido", JOptionPane.INFORMATION_MESSAGE);
+			                dispose(); // Cerrar la ventana actual
+			                Principal principalFrame = new Principal();
+			                principalFrame.setVisible(true);
+			            } else {
+			                JOptionPane.showMessageDialog(null, "Error: Usuario o contraseña incorrectos.", "Acceso denegado", JOptionPane.ERROR_MESSAGE);
+			            }
+
+			        } catch (SQLException ex) {
+			            ex.printStackTrace();
+			            JOptionPane.showMessageDialog(null, "Error al conectar a la base de datos: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+			        }}
 		});
 		btnIngresar.setBounds(46, 161, 109, 23);
 		panel.add(btnIngresar);
@@ -88,6 +128,14 @@ public class Logeo extends JFrame {
 		btnRegistrar.setBounds(187, 161, 109, 23);
 		panel.add(btnRegistrar);
 		
+		btnRegistrar.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+		        dispose(); // Cierra la ventana actual
+		        Registrar registrarFrame = new Registrar();
+		        registrarFrame.setVisible(true);
+		    }
+		});
+		
 		txtUsuario = new JTextField();
 		txtUsuario.setBounds(94, 61, 202, 20);
 		panel.add(txtUsuario);
@@ -96,5 +144,7 @@ public class Logeo extends JFrame {
 		jpassClave = new JPasswordField();
 		jpassClave.setBounds(104, 86, 192, 20);
 		panel.add(jpassClave);
+		
+		
 	}
 }

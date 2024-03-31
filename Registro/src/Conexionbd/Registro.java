@@ -44,8 +44,7 @@ public class Registro {
 
 	    public static void main(String[] args) {
 	        Registro db = new Registro();
-	        try {
-	            Connection con = db.getConnection();
+	        try (Connection con = db.getConnection()) {
 	            // Realizar operaciones con la conexión
 	            db.close(); // Cerrar la conexión al finalizar las operaciones
 	        } catch (SQLException e) {
