@@ -30,9 +30,7 @@ public class Principal extends JFrame {
 	private JPanel contentPane;
 	private JTable table;
 
-	/**
-	 * Launch the application.
-	 */
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -46,9 +44,7 @@ public class Principal extends JFrame {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
+	
 	public Principal() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 637, 354);
@@ -104,10 +100,10 @@ public class Principal extends JFrame {
 		btnCerrarSeccion.setBounds(447, 265, 150, 39);
 		panel.add(btnCerrarSeccion);
 		
-		   // Cargar datos de la tabla al abrir la ventana
+		   
         cargarDatosTabla();
 
-        // ActionListener para el botón "Nuevo"
+        // Logica o funcionalidad de boton
         btnNuevo.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             	 String nombre = JOptionPane.showInputDialog(null, "Ingrese el nombre del nuevo usuario:", "Nuevo Usuario", JOptionPane.QUESTION_MESSAGE);
@@ -134,12 +130,12 @@ public class Principal extends JFrame {
                          int rowsInserted = statement.executeUpdate();
                          if (rowsInserted > 0) {
                              JOptionPane.showMessageDialog(null, "Nuevo usuario agregado correctamente", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
-                             cargarDatosTabla(); // Actualizar la tabla después de agregar un nuevo usuario
+                             cargarDatosTabla(); 
                          } else {
                              JOptionPane.showMessageDialog(null, "No se pudo agregar el nuevo usuario", "Error", JOptionPane.ERROR_MESSAGE);
                          }
 
-                         connection.close(); // Cerrar la conexión
+                         connection.close(); // conexion ceerada
                      } catch (SQLException ex) {
                          ex.printStackTrace();
                          JOptionPane.showMessageDialog(null, "Error al conectar a la base de datos: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -150,7 +146,7 @@ public class Principal extends JFrame {
             }
         });
 
-        // ActionListener para el botón "Actualizar"
+        // Logica o funcionalidad del boton
         btnActualizar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             	  cargarDatosTabla(); 
@@ -159,13 +155,13 @@ public class Principal extends JFrame {
             }
         );
 
-        // ActionListener para el botón "Eliminar"
+        // Logica o funcionalidad del boton
         btnEliminar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            	// Obtener la fila seleccionada
+            	
                 int selectedRow = table.getSelectedRow();
                 if (selectedRow >= 0) {
-                    // Obtener el ID del usuario a eliminar (suponiendo que el ID está en la primera columna de la tabla)
+                  
                     Object idObject = table.getValueAt(selectedRow, 0);
                     if (idObject instanceof Integer) {
                         int id = (Integer) idObject;
@@ -182,12 +178,12 @@ public class Principal extends JFrame {
                             int rowsDeleted = statement.executeUpdate();
                             if (rowsDeleted > 0) {
                                 JOptionPane.showMessageDialog(null, "Usuario eliminado correctamente", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
-                                cargarDatosTabla(); // Actualizar la tabla después de eliminar el usuario
+                                cargarDatosTabla();
                             } else {
                                 JOptionPane.showMessageDialog(null, "No se pudo eliminar el usuario", "Error", JOptionPane.ERROR_MESSAGE);
                             }
 
-                            connection.close(); // Cerrar la conexión
+                            connection.close(); // Conexion cerrada
                         } catch (SQLException ex) {
                             ex.printStackTrace();
                             JOptionPane.showMessageDialog(null, "Error al conectar a la base de datos: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -201,15 +197,14 @@ public class Principal extends JFrame {
             }
         });
 
-        // ActionListener para el botón "Cerrar Sesión"
+        // logica o funcionalidad de boton 
         btnCerrarSeccion.addActionListener(new ActionListener() {
+          
+        	//Metodo para cerrar una ventana y abrir otra
             @Override
 			public void actionPerformed(ActionEvent e) {
             	
-            	  // Cerrar la ventana actual
                 dispose();
-
-                // Mostrar la ventana de inicio de sesión
                 Logeo loginFrame = new Logeo();
                 loginFrame.setVisible(true);
 				
@@ -230,7 +225,7 @@ public class Principal extends JFrame {
 		        PreparedStatement statement = connection.prepareStatement(sql);
 		        ResultSet result = statement.executeQuery();
 
-		        // Crear un modelo de tabla para almacenar los resultados
+		        // cabecera tabla
 		        DefaultTableModel model = new DefaultTableModel();
 		        model.addColumn("ID");
 		        model.addColumn("Nombre");
@@ -239,8 +234,8 @@ public class Principal extends JFrame {
 		        model.addColumn("Usuario");
 
 		        while (result.next()) {
-		            // Obtener los datos de cada fila y agregarlos al modelo de la tabla
-		            Object[] row = new Object[5]; // Solo 5 columnas: ID, Nombre, Apellido, Correo, Usuario
+		            
+		            Object[] row = new Object[5]; // seleccion de filae que se visualizaran de la base de datos
 		            row[0] = result.getInt("id");
 		            row[1] = result.getString("Nombre");
 		            row[2] = result.getString("Apellido");
@@ -249,9 +244,9 @@ public class Principal extends JFrame {
 		            model.addRow(row);
 		        }
 
-		        // Asignar el modelo de la tabla al JTable
+		        // 
 		        table.setModel(model);
-		        connection.close(); // Cerrar la conexión
+		        connection.close(); // conexion cerrada
 		    } catch (SQLException ex) {
 		        ex.printStackTrace();
 		        JOptionPane.showMessageDialog(null, "Error al conectar a la base de datos: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);

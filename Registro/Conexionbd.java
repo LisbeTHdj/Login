@@ -46,8 +46,7 @@ public class Conexionbasedato {
 	        Conexionbasedato db = new Conexionbasedato();
 	        try {
 	            Connection con = db.getConnection();
-	            // Realizar operaciones con la conexión
-	            db.close(); // Cerrar la conexión al finalizar las operaciones
+	            db.close(); // Conexion cerrada
 	        } catch (SQLException e) {
 	            e.printStackTrace();
 	            System.out.println("Error de conexión");

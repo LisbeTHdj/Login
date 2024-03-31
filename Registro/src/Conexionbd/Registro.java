@@ -2,6 +2,8 @@ package Conexionbd;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Registro {
@@ -43,15 +45,28 @@ public class Registro {
 	    }
 
 	    public static void main(String[] args) {
-	        Registro db = new Registro();
-	        try (Connection con = db.getConnection()) {
-	            // Realizar operaciones con la conexión
-	            db.close(); // Cerrar la conexión al finalizar las operaciones
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	            System.out.println("Error de conexión");
-	        }
+	    	 Registro db = new Registro();
+	    	    Connection con = null;
+	    	    try {
+	    	        con = db.getConnection();
+	    	       
+	    	        PreparedStatement statement = con.prepareStatement("SELECT * FROM tabla");
+	    	        ResultSet result = statement.executeQuery();
+	    	       
+	    	    } catch (SQLException e) {
+	    	        e.printStackTrace();
+	    	        System.out.println("Error de conexión");
+	    	    } finally {
+	    	        if (con != null) {
+	    	            try {
+	    	                con.close();
+	    	                System.out.println("Se cerró la conexión exitosamente");
+	    	            } catch (SQLException e) {
+	    	                e.printStackTrace();
+	    	                System.out.println("Error al cerrar la conexión");
+	    	            }
+	    	        }
 	    }
 	
 
-}
+}}

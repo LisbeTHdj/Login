@@ -28,9 +28,6 @@ public class Logeo extends JFrame {
 	private JTextField txtUsuario;
 	private JPasswordField jpassClave;
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -44,9 +41,6 @@ public class Logeo extends JFrame {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
 	public Logeo() {
 		setTitle("Login");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -83,11 +77,11 @@ public class Logeo extends JFrame {
 		btnIngresar.setFont(new Font("Arial", Font.BOLD, 14));
 		btnIngresar.setBackground(new Color(255, 215, 0));
 		btnIngresar.addActionListener(new ActionListener() {
+			//Logica o Funcionalidad de boton ingresar
 			public void actionPerformed(ActionEvent e) {
 				 String usuario = txtUsuario.getText();
 			        String contraseña = new String(jpassClave.getPassword());
 
-			        // Validar campos vacíos
 			        if (usuario.isEmpty() || contraseña.isEmpty()) {
 			            JOptionPane.showMessageDialog(null, "Error: Todos los campos son obligatorios.", "Incompleto", JOptionPane.ERROR_MESSAGE);
 			            return;
@@ -107,7 +101,7 @@ public class Logeo extends JFrame {
 
 			            if (result.next()) {
 			                JOptionPane.showMessageDialog(null, "Bienvenido, " + usuario + "!", "Acceso permitido", JOptionPane.INFORMATION_MESSAGE);
-			                dispose(); // Cerrar la ventana actual
+			                dispose(); // se Cierra ventana al ingresar
 			                Principal principalFrame = new Principal();
 			                principalFrame.setVisible(true);
 			            } else {
@@ -128,6 +122,7 @@ public class Logeo extends JFrame {
 		btnRegistrar.setBounds(187, 161, 109, 23);
 		panel.add(btnRegistrar);
 		
+		//Logica o funcionalidad de boton registrar
 		btnRegistrar.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
 		        dispose(); // Cierra la ventana actual
